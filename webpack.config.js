@@ -57,11 +57,17 @@ module.exports = {
         alias: Object.assign({
             'es5-shim': path.join(__dirname, 'node_modules', 'es5-shim', 'es5-shim.min.js'),
             'es5-sham': path.join(__dirname, 'node_modules', 'es5-shim', 'es5-sham.min.js'),
+            'Swiper': path.join(__dirname, 'node_modules', 'swiper', 'dist', 'js', 'swiper.js'),
+            'SwiperCss': path.join(__dirname, 'node_modules', 'swiper', 'dist', 'css', 'swiper.css')
         }, spriteAlias)
     },
     module: moduleConfig(mode !== prod, cssExtractTextPlugin),
     devServer: getDevServerConfig(mode === dev),
     plugins: getPlugins(mode, htmlPlugins, cssExtractTextPlugin),
+    externals: {
+        'jquery': '$',
+        'jQuery': '$'
+    },
     // postcss配置
     postcss: () => {
         return [
