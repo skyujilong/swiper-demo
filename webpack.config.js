@@ -34,6 +34,7 @@ let spriteAlias = (() => {
     let obj = {};
     config.sprites.forEach((item) => {
         obj[item.name] = path.join(__dirname, 'pages', 'img', item.name + '-sprite.png')
+        obj[item.name + '@2x'] = path.join(__dirname, 'pages', 'img', item.name + '-sprite@2x.png')
     });
     return obj;
 })();

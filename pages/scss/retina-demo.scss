@@ -1,0 +1,11 @@
+@import "~normal-sprite";
+.img{
+    @include retina-sprite($gugong-group);
+    margin: 0.2rem auto;
+}
+
+.fang{
+    width: 200px;
+    height: 200px;
+    border: 1px solid red;
+}

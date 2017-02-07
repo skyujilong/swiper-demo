@@ -9,11 +9,69 @@
 //
 // At the bottom of this section, we provide information about the spritesheet itself
 // $spritesheet: width height image $spritesheet-sprites;
-$spritesheet-width: 0px;
-$spritesheet-height: 0px;
+$gugong-name: 'gugong';
+$gugong-x: 0px;
+$gugong-y: 0px;
+$gugong-offset-x: 0px;
+$gugong-offset-y: 0px;
+$gugong-width: 200px;
+$gugong-height: 200px;
+$gugong-total-width: 400px;
+$gugong-total-height: 200px;
+$gugong-image: '~normal';
+$gugong: (0px, 0px, 0px, 0px, 200px, 200px, 400px, 200px, '~normal', 'gugong', );
+$wxb-name: 'wxb';
+$wxb-x: 200px;
+$wxb-y: 0px;
+$wxb-offset-x: -200px;
+$wxb-offset-y: 0px;
+$wxb-width: 200px;
+$wxb-height: 200px;
+$wxb-total-width: 400px;
+$wxb-total-height: 200px;
+$wxb-image: '~normal';
+$wxb: (200px, 0px, -200px, 0px, 200px, 200px, 400px, 200px, '~normal', 'wxb', );
+$retina-gugong-name: 'retina_gugong';
+$retina-gugong-x: 0px;
+$retina-gugong-y: 0px;
+$retina-gugong-offset-x: 0px;
+$retina-gugong-offset-y: 0px;
+$retina-gugong-width: 400px;
+$retina-gugong-height: 400px;
+$retina-gugong-total-width: 800px;
+$retina-gugong-total-height: 400px;
+$retina-gugong-image: '~normal@2x';
+$retina-gugong: (0px, 0px, 0px, 0px, 400px, 400px, 800px, 400px, '~normal@2x', 'retina_gugong', );
+$retina-wxb-name: 'retina_wxb';
+$retina-wxb-x: 400px;
+$retina-wxb-y: 0px;
+$retina-wxb-offset-x: -400px;
+$retina-wxb-offset-y: 0px;
+$retina-wxb-width: 400px;
+$retina-wxb-height: 400px;
+$retina-wxb-total-width: 800px;
+$retina-wxb-total-height: 400px;
+$retina-wxb-image: '~normal@2x';
+$retina-wxb: (400px, 0px, -400px, 0px, 400px, 400px, 800px, 400px, '~normal@2x', 'retina_wxb', );
+$spritesheet-width: 400px;
+$spritesheet-height: 200px;
 $spritesheet-image: '~normal';
-$spritesheet-sprites: ();
-$spritesheet: (0px, 0px, '~normal', $spritesheet-sprites, );
+$spritesheet-sprites: ($gugong, $wxb, );
+$spritesheet: (400px, 200px, '~normal', $spritesheet-sprites, );
+$retina-spritesheet-width: 800px;
+$retina-spritesheet-height: 400px;
+$retina-spritesheet-image: '~normal@2x';
+$retina-spritesheet-sprites: ($retina-gugong, $retina-wxb, );
+$retina-spritesheet: (800px, 400px, '~normal@2x', $retina-spritesheet-sprites, );
+
+// These "retina group" variables are mappings for the naming and pairing of normal and retina sprites.
+//
+// The list formatted variables are intended for mixins like `retina-sprite` and `retina-sprites`.
+$gugong-group-name: 'gugong';
+$gugong-group: ('gugong', $gugong, $retina-gugong, );
+$wxb-group-name: 'wxb';
+$wxb-group: ('wxb', $wxb, $retina-wxb, );
+$retina-groups: ($gugong-group, $wxb-group, );
 
 // The provided mixins are intended to be used with the array-like variables
 //
@@ -65,6 +123,34 @@ $spritesheet: (0px, 0px, '~normal', $spritesheet-sprites, );
   @include sprite-height($sprite);
 }
 
+// The `retina-sprite` mixin sets up rules and a media query for a sprite/retina sprite.
+//   It should be used with a "retina group" variable.
+//
+// The media query is from CSS Tricks: https://css-tricks.com/snippets/css/retina-display-media-query/
+//
+// $icon-home-group: ('icon-home', $icon-home, $icon-home-2x, );
+//
+// .icon-home {
+//   @include retina-sprite($icon-home-group);
+// }
+@mixin sprite-background-size($sprite) {
+  $sprite-total-width: nth($sprite, 7);
+  $sprite-total-height: nth($sprite, 8);
+  background-size: $sprite-total-width $sprite-total-height;
+}
+
+@mixin retina-sprite($retina-group) {
+  $normal-sprite: nth($retina-group, 2);
+  $retina-sprite: nth($retina-group, 3);
+  @include sprite($normal-sprite);
+
+  @media (-webkit-min-device-pixel-ratio: 2),
+         (min-resolution: 192dpi) {
+    @include sprite-image($retina-sprite);
+    @include sprite-background-size($normal-sprite);
+  }
+}
+
 // The `sprites` mixin generates identical output to the CSS template
 //   but can be overridden inside of SCSS
 //
@@ -74,6 +160,19 @@ $spritesheet: (0px, 0px, '~normal', $spritesheet-sprites, );
     $sprite-name: nth($sprite, 10);
     .#{$sprite-name} {
       @include sprite($sprite);
+    }
+  }
+}
+
+// The `retina-sprites` mixin generates a CSS rule and media query for retina groups
+//   This yields the same output as CSS retina template but can be overridden in SCSS
+//
+// @include retina-sprites($retina-groups);
+@mixin retina-sprites($retina-groups) {
+  @each $retina-group in $retina-groups {
+    $sprite-name: nth($retina-group, 1);
+    .#{$sprite-name} {
+      @include retina-sprite($retina-group);
     }
   }
 }
