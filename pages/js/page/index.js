@@ -18,10 +18,15 @@ var swiper2 = new Swiper('#swiper2', {
     slidesPerView: 'auto',
     mousewheelControl: true,
     freeMode: true,
-    onTap: function(swiper,event){
+    onTap: function(swiper, event) {
         //TODO 通过绑定的 tap事件进行分发点击事件。
         //event.target 然后判断对应的className之类的方式
         console.log(swiper);
         console.log(event);
+    },
+    // 初始化后自动滚动一定的位置
+    onInit: function(swiper) {
+        swiper.setWrapperTransition(1000);
+        swiper.setWrapperTranslate(-300);
     }
 });

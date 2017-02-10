@@ -29,6 +29,7 @@ config.sprites.forEach((item) => {
         },
         // retina: '@2x'
         retina: {
+            //判断是否是高清图，同时返回对应图片的信息，是否是高清图，对应普通图片与高清图片的绝对地址。
             classifier: (fileName) => {
                 var result = /([^/.]+)\.([^.]+)/.exec(fileName);
                 if (!result) {
@@ -50,7 +51,9 @@ config.sprites.forEach((item) => {
                     };
                 }
             },
+            //生成的图片地址
             targetImage: path.resolve(__dirname, '..', 'pages/img/' + name + '-sprite@2x.png'),
+            //在scss中引用的webpack对象
             cssImageRef: '~' + name + '@2x'
         }
     }));

@@ -3,7 +3,10 @@
     @include retina-sprite($gugong-group);
     margin: 0.2rem auto;
 }
-
+.img1{
+    @include retina-sprite($wxb-group);
+    margin: 0.2rem auto;
+}
 .fang{
     width: 200px;
     height: 200px;
